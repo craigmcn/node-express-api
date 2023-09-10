@@ -14,76 +14,60 @@ const createEvent = async (req, res) => {
       actor_id: req.body.actor_id
     });
 
-    event.save().then((result) => {
-      res.status(201).send(result);
-    }).catch((error) => {
-      // console.error(error);
-      res.status(400).json(error);
-    });
+    const result = await event.save();
+    res.status(201).send(result);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
 const getEventsByUserId = async (req, res) => {
   try {
-    Event.find({
+    const events = await Event.find({
       actor_id: req.params.user_id
-    }).then(events => {
-      res.json(events);
-    }).catch((error) => {
-      // console.error(error);
-      res.status(400).json(error);
     });
+
+    res.json(events);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
 const getAllEvents = async (req, res) => {
   try {
-    Event.find({}).then(events => {
-      res.json(events);
-    }).catch((error) => {
-      // console.error(error);
-      res.status(400).json(error);
-    });
+    const events = await Event.find({});
+    res.json(events);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
 const getEventsByRepoId = async (req, res) => {
   try {
-    Event.find({
+    const events = await Event.find({
       repo_id: req.params.repo_id
-    }).then(events => {
-      res.json(events);
-    }).catch((error) => {
-      // console.error(error);
-      res.status(400).json(error);
     });
+
+    res.json(events);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
 const getEventByEventId = async (req, res) => {
   try {
-    Event.find({
+    const events = await Event.find({
       id: req.params.event_id
-    }).then(events => {
-      if (events.length === 0) {
-        res.status(404).json({ error: { message: "Event does not exist." } });
-        return;
-      }
-      res.json(events);
-    }).catch((error) => {
-      // console.error(error);
-      res.status(400).json(error);
     });
+
+    if (events.length === 0) {
+      res.status(404).json({ error: { message: "Event does not exist." } });
+      return;
+    }
+
+    res.json(events);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 };
 
